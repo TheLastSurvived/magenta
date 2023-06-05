@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}
+Услуги
+{% endblock %}
+
+{% block main %}
+
+
+
+    <main>
+        <div class="container">
+          {%if 'name' in session and active_user.root==1%}
+          <p class="my-3">
+            <a class="btn btn-dark" href="/delete-merch/{{merch.id}}">Удалить</a>
+            {% with messages = get_flashed_messages(True) %}
+            {% if messages %}
+            {% for category, message in messages %}
+          <p class="flash {{category}}">{{message}}</p>
+          {% endfor %}
+          {% endif %}
+          {% endwith %}
+          </p>
+  
+        
+          {% endif %}
+            <div class="merch-wrap my-3">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"
+                                aria-label="Slide 1"></button>
+                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"
+                                class=""></button>
+                           
+                            </div>
+                            <div class="carousel-inner">
+                              <div class="carousel-item active">
+                                <div class="img-index-wrapper">
+                                  <img src="../static/img/news/{{merch.photo1}}" height="900" alt="">
+                                </div>
+                                <div class="container">
+                                  <div class="carousel-caption">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="carousel-item">
+                                <div class="img-index-wrapper"> 
+                                <img src="../static/img/news/{{merch.photo2}}" height="900" alt="" >
+                              </div>
+                                <div class="container">
+                                  <div class="carousel-caption">
+                                  </div>
+                                </div>
+                              </div>
+                              
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                              <span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
+                          </div>
+
+                          <h3 class="mt-3">Отзывы:</h3>
+                          {%if not comment%}
+                            <h4>Отзывов нет!</h4>
+                          {%endif%}
+
+                          <div class="comment">
+                            {%for el in comment%}
+                            <hr>
+                              <div class="my-4  ">
+                                
+                                <h4>{{el.name}}:</h4>
+                                <p>   {{el.text}}</p>
+                             
+                              </div>
+                              
+                            {%endfor%}
+                          </div>
+                          
+
+                          {%if 'name' in session%}
+                          <form class="my-5" method="post" enctype="multipart/form-data">
+                            <h2 class="title">Добавить отзыв</h2>
+                            <div class="mb-3">
+                              <label for="exampleInputEmail1" class="form-label">Имя</label>
+                              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="name">
+                            </div>
+                            <div class="mb-3">
+                
+                              <label for="exampleInputEmail1" class="form-label">Текст</label>
+                              <textarea name="text" id="textArea" cols="10" class="w-100" rows="10" id="exampleInputEmail1" required></textarea >
+
+                            </div>
+                  
+                            <button type="submit" class="btn btn-dark">Добавить новость</button>
+                          </form>
+                             
+                            {% endif %}
+                    </div>
+
+                    <aside class="col-md-4">
+                        <h2>{{merch.title}}</h2>
+                        <h3 class="text-muted">{{merch.price}} BYN</h3>
+                        <h4>Описание</h4>
+                        {% autoescape false %}
+                        {{merch.description}}
+                        {% endautoescape %}
+                        <ul class="list-group list-group-flush my-3">
+                            <li class="list-group-item"> <span class="text-muted">Цвет</span> - {{merch.color}} </li>
+                            <li class="list-group-item"> <span class="text-muted">Размер</span> - {{merch.size}} </li>
+                            <li class="list-group-item"> <span class="text-muted">Материал</span> - {{merch.material}} </li>
+                        </ul>
+
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          <i class="bi bi-cart"></i> Купить
+                        </button>
+                    </aside>
+                   
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Купить</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <form class=""  action="{{url_for('buy',id=merch.id)}}" method="post">
+                          
+                              <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Адрес</label>
+                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name="adres" required>
+                              </div>
+                              <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Почта</label>
+                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{active_user.email}}" name="email" required>
+                              </div>
+                              <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Телефон</label>
+                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{active_user.phone}}" name="phonr" required>
+                              </div>
+                            
+                       
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-primary">Купить</button>
+                            
+                          </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% endblock %}
