@@ -37,7 +37,7 @@
                             <div class="carousel-inner">
                               <div class="carousel-item active">
                                 <div class="img-index-wrapper">
-                                  <img src="../static/img/news/{{merch.photo1}}" height="900" alt="">
+                                  <img src="../static/img/news/{{merch.photo1}}" height="50%" alt="">
                                 </div>
                                 <div class="container">
                                   <div class="carousel-caption">
@@ -46,7 +46,7 @@
                               </div>
                               <div class="carousel-item">
                                 <div class="img-index-wrapper"> 
-                                <img src="../static/img/news/{{merch.photo2}}" height="900" alt="" >
+                                <img src="../static/img/news/{{merch.photo2}}" height="50%" alt="" >
                               </div>
                                 <div class="container">
                                   <div class="carousel-caption">
@@ -84,7 +84,7 @@
                           </div>
                           
 
-                          {%if 'name' in session%}
+                         
                           <form class="my-5" method="post" enctype="multipart/form-data">
                             <h2 class="title">Добавить отзыв</h2>
                             <div class="mb-3">
@@ -98,10 +98,10 @@
 
                             </div>
                   
-                            <button type="submit" class="btn btn-dark">Добавить новость</button>
+                            <button type="submit" class="btn btn-dark">Добавить отзыв</button>
                           </form>
                              
-                            {% endif %}
+                          
                     </div>
 
                     <aside class="col-md-4">
