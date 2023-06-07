@@ -33,17 +33,18 @@
             </div>
           </div>
           <div class="form-group  mb-3">
-            <label for="inputEmail3" class=" control-label">Номер телефона</label>
+            <label for="inputEmail3" class=" control-label">Почта</label>
             <div class="">
-              <input type="number" class="form-control" placeholder="Номер телефона" name="phone" required>
+              <input type="text" class="form-control" id="email" placeholder="name@example.com" name="email" required>
             </div>
           </div>
           <div class="form-group  mb-3">
-            <label for="inputEmail3" class=" control-label">Почта</label>
+            <label for="inputEmail3" class=" control-label">Номер телефона</label>
             <div class="">
-              <input type="email" class="form-control" placeholder="Почта" name="email" required>
+              <input type="tel"  id="phone" class="form-control" placeholder="+375(__)___-__-__" name="phone" required>
             </div>
           </div>
+         
           <div class="form-group mb-3">
             <label for="inputPassword3" class="control-label">Пароль</label>
             <div class="">
@@ -53,7 +54,7 @@
 
           <div class="form-group">
             <div class="col-sm-offset-2">
-              <button type="submit" class="btn btn-dark">Зарегистрироваться</button>
+              <button type="submit" class="btn btn-dark disabled" id="regButton">Зарегистрироваться</button>
             </div>
           </div>
           <p class="my-3">Есть аккаунт? <br> <a href="/auth" class="link-info">Войти</a></p>
@@ -63,4 +64,54 @@
     </div>
   </div>
 </main>
+{% endblock %}
+
+{% block js %}
+<script src="../static/js/imask.js"></script>
+
+<script>
+let emailInput = document.querySelector("#email");
+  // Считываем поле ввода
+let phoneInput = document.querySelector("#phone");
+let btn = document.querySelector("#regButton");
+
+// Создаем маску в инпуте
+const phoneMask = new IMask(phoneInput, {
+  mask: "+{375}(00)000-00-00",
+});
+
+const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+
+
+function isEmailValid(value) {
+return EMAIL_REGEXP.test(value);
+}
+
+
+phoneInput.addEventListener("input", phoneInputHandler);
+
+
+function onInput() {
+  if (isEmailValid(emailInput.value)) {
+    emailInput.style.borderColor = 'green';
+  } else {
+    emailInput.style.borderColor = 'red';
+  }
+}
+
+emailInput.addEventListener('input', onInput);
+
+
+function phoneInputHandler() {
+  if (phoneMask.masked.isComplete && isEmailValid(emailInput.value)) {
+    btn.classList.remove("disabled");
+    phoneInput.style.borderColor = 'green';
+  } else {
+    phoneInput.style.borderColor = 'red';
+  }
+}
+
+
+</script>
+
 {% endblock %}

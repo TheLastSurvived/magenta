@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-Услуги
+{{merch.title}}
 {% endblock %}
 
 {% block main %}
@@ -138,18 +138,18 @@
                               </div>
                               <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Почта</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{active_user.email}}" name="email" required>
+                                <input type="email" class="form-control" placeholder="name@example.com" id="email" aria-describedby="emailHelp" value="{{active_user.email}}" name="email" required>
                               </div>
                               <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Телефон</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{active_user.phone}}" name="phonr" required>
+                                <input type="text" placeholder="+375(__)___-__-__" class="form-control" id="phone" aria-describedby="emailHelp" value="{{active_user.phone}}" name="phone" required>
                               </div>
                             
                        
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                            <button type="submit" class="btn btn-primary">Купить</button>
+                            <button type="submit" id="sendButton" class="btn btn-primary disabled">Купить</button>
                             
                           </form>
                           </div>
@@ -163,3 +163,52 @@
     </main>
 
     {% endblock %}
+
+    {% block js %}
+<script src="https://unpkg.com/imask"></script>
+
+<script>
+let emailInput = document.querySelector("#email");
+  // Считываем поле ввода
+let phoneInput = document.querySelector("#phone");
+let btn = document.querySelector("#sendButton");
+
+// Создаем маску в инпуте
+const phoneMask = new IMask(phoneInput, {
+  mask: "+{375}(00)000-00-00",
+});
+
+
+const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+
+
+function isEmailValid(value) {
+return EMAIL_REGEXP.test(value);
+}
+
+
+phoneInput.addEventListener("input", phoneInputHandler);
+
+
+function onInput() {
+  if (isEmailValid(emailInput.value)) {
+    emailInput.style.borderColor = 'green';
+  } else {
+    emailInput.style.borderColor = 'red';
+  }
+}
+
+emailInput.addEventListener('input', onInput);
+
+
+function phoneInputHandler() {
+  if (phoneMask.masked.isComplete && isEmailValid(emailInput.value)) {
+    btn.classList.remove("disabled");
+    phoneInput.style.borderColor = 'green';
+  } else {
+    phoneInput.style.borderColor = 'red';
+  }
+}
+</script>
+
+{% endblock %}

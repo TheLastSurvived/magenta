@@ -47,8 +47,9 @@ def reg():
             db.session.commit()
             flash("Регистрация прошла успешно!", category="ok")
         except:
-            flash("Произошла ошибка! Проверьте введенные данные!", category="bad")
+            flash("Почта или пароль уже используются!", category="bad")
             db.session.rollback()
+            return redirect(url_for("reg"))
     return render_template("reg.html")
 
 
@@ -216,8 +217,12 @@ def shop():
 
 @app.route('/shop-page/<int:id>', methods=['GET','POST'])
 def shop_page(id):
-    comment = Comment.query.filter_by(merch_id=id).all()
     merch = Merch.query.get(id)
+
+    if not merch:
+        abort(404)
+
+    comment = Comment.query.filter_by(merch_id=id).all()
     if request.method == 'POST':
         name = request.form.get('name')
         text = request.form.get('text')
@@ -284,10 +289,10 @@ def page_not_found(e):
 
 @app.errorhandler(401)
 def  error_unauthorized(e):
-    # note that we set the 404 status explicitly
+    # note that we set the 401 status explicitly
     return render_template('401.html'), 401
 
 @app.errorhandler(403)
 def forbidded(e):
-    # note that we set the 404 status explicitly
+    # note that we set the 403 status explicitly
     return render_template('403.html'), 403

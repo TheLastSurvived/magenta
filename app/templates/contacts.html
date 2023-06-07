@@ -26,7 +26,7 @@
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Ваша почта</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+            <input type="email" class="form-control" id="email" placeholder="name@example.com" aria-describedby="emailHelp" name="email" required>
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Тема</label>
@@ -34,10 +34,10 @@
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Ваше сообщение</label>
-            <textarea name="" id="" cols="10" class="w-100" rows="10" id="exampleInputEmail1"></textarea name="message" required>
+            <textarea name="message" required name="" id="" cols="10" class="w-100" rows="10" id="exampleInputEmail1"></textarea >
           </div>
 
-          <button type="submit" class="btn btn-dark">Отправить</button>
+          <button type="submit" id="sendButton" class="btn btn-dark disabled">Отправить</button>
         </form>
       
       </div>
@@ -61,4 +61,35 @@
       referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
 </main>
+{% endblock %}
+
+{% block js %}
+<script src="../static/js/imask.js"></script>
+
+<script>
+let emailInput = document.querySelector("#email");
+  // Считываем поле ввода
+let btn = document.querySelector("#sendButton");
+
+const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+
+
+function isEmailValid(value) {
+return EMAIL_REGEXP.test(value);
+}
+
+
+emailInput.addEventListener('input', onInput);
+
+
+function onInput() {
+  if (isEmailValid(emailInput.value)) {
+    btn.classList.remove("disabled");
+    emailInput.style.borderColor = 'green';
+  } else {
+    emailInput.style.borderColor = 'red';
+  }
+}
+</script>
+
 {% endblock %}

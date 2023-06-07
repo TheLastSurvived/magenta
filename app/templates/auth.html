@@ -23,7 +23,7 @@
           <div class="form-group">
             <label for="inputEmail3" class=" control-label">Почта</label>
             <div class="">
-              <input type="email" class="form-control" placeholder="Почта" name="email" required>
+              <input type="email" class="form-control" id="email" placeholder="name@example.com" placeholder="Почта" name="email" required>
             </div>
           </div>
           <div class="form-group my-3">
@@ -35,7 +35,7 @@
 
           <div class="form-group">
             <div class="col-sm-offset-2">
-              <button type="submit" class="btn btn-dark">Войти</button>
+              <button type="submit" id="authButton" class="btn btn-dark disabled">Войти</button>
             </div>
           </div>
           <p class="my-3">Нет аккаунта? <br> <a href="/reg" class="link-info">Регистрация</a></p>
@@ -44,4 +44,35 @@
     </div>
   </div>
 </main>
+{% endblock %}
+
+{% block js %}
+<script src="../static/js/imask.js"></script>
+
+<script>
+let emailInput = document.querySelector("#email");
+  // Считываем поле ввода
+let btn = document.querySelector("#authButton");
+
+const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+
+
+function isEmailValid(value) {
+return EMAIL_REGEXP.test(value);
+}
+
+
+emailInput.addEventListener('input', onInput);
+
+
+function onInput() {
+  if (isEmailValid(emailInput.value)) {
+    btn.classList.remove("disabled");
+    emailInput.style.borderColor = 'green';
+  } else {
+    emailInput.style.borderColor = 'red';
+  }
+}
+</script>
+
 {% endblock %}
