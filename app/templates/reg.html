@@ -80,7 +80,7 @@ const phoneMask = new IMask(phoneInput, {
   mask: "+{375}(00)000-00-00",
 });
 
-const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,5})$/iu;
 
 
 function isEmailValid(value) {
@@ -99,15 +99,17 @@ function onInput() {
   }
 }
 
-emailInput.addEventListener('input', onInput);
-
+emailInput.addEventListener('input', phoneInputHandler);
 
 function phoneInputHandler() {
   if (phoneMask.masked.isComplete && isEmailValid(emailInput.value)) {
     btn.classList.remove("disabled");
     phoneInput.style.borderColor = 'green';
+    emailInput.style.borderColor = 'green';
   } else {
+    btn.classList.add("disabled");
     phoneInput.style.borderColor = 'red';
+    emailInput.style.borderColor = 'red';
   }
 }
 

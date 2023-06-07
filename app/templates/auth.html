@@ -54,7 +54,7 @@ let emailInput = document.querySelector("#email");
   // Считываем поле ввода
 let btn = document.querySelector("#authButton");
 
-const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,5})$/iu;
 
 
 function isEmailValid(value) {
@@ -71,6 +71,7 @@ function onInput() {
     emailInput.style.borderColor = 'green';
   } else {
     emailInput.style.borderColor = 'red';
+    btn.classList.add("disabled");
   }
 }
 </script>
